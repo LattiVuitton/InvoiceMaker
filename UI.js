@@ -1,12 +1,16 @@
 const SETTINGS_WIDTH = 500;
 
 const itemText = document.getElementById("itemText");
+const quantityText = document.getElementById("quantityText");
+const priceText = document.getElementById("priceText");
 const clearButton = document.getElementById("clear");
 const addButton = document.getElementById("add");
 const settingsButton = document.getElementById("settings");
 const settingsHolder = document.getElementById("settings-holder");
 const downloadButton = document.getElementById("downloadText");
 const fScreenButton = document.getElementById("fscreen");
+
+var total = 0;
 
 var downloadCount = 1;
 
@@ -16,14 +20,41 @@ var itemElements = []
 var panelOpen = false;
 
 class Item {
-    constructor(name) {
-        this.name = name;
+    constructor(description, quantity, price) {
+        this.description = description;
+        this.quantity = quantity;
+        this.price = price;
     }
 }
 
-function isValidFood(food) {
-    for (let i = 0; i < food.length; i++){
-        if (food[i] != " ") {
+function isValidItem(description, quantity, price) {
+    if (!isValidDesc(description)) {
+        return false
+    }
+
+    if (!isValidDesc(quantity)) {
+        return false
+    }
+
+    if (!isValidPrice(price)) {
+        return false
+    }
+
+    return true
+}
+
+function isValidPrice(price) {
+  const parsedPrice = parseFloat(price);
+  if (isNaN(parsedPrice) || parsedPrice <= 0) {
+    return false;
+  }
+
+  return true;
+}
+
+function isValidDesc(description) {
+    for (let i = 0; i < description.length; i++){
+        if (description[i] != " ") {
             return true;
         }
     }
@@ -31,27 +62,60 @@ function isValidFood(food) {
 }
 
 function clear() {
-    document.querySelectorAll('.ingredient').forEach(e => e.remove());
-    items = []
+    document.querySelectorAll('.invoiceItem').forEach(e => e.remove());
+    items = [];
+    total = 0;
+    updateSum();
+}
+
+function updateSum() {
+    let roundedNumber = parseFloat(total).toFixed(2);
+    document.getElementById("sumText").innerHTML = "$ " + roundedNumber
 }
 
 function createItem() {
     const itemsList = document.getElementById("items");
 
-    let text = itemText.value;
+    let description = itemText.value;
+    let quantity = quantityText.value;
+    let price = parseFloat(priceText.value);
 
-    if (isValidFood(text)) {
-        const newItem = new Item(text);
+    if (isValidItem(description, quantity, price)) {
+        const newItem = new Item(description, quantity, price);
         items.unshift(newItem);
     
-        const newP = document.createElement('p');
-        newP.innerHTML = text + "";
-        newP.className = "ingredient"
+        const newP = document.createElement('div');
+        newP.className = "invoiceItem"
 
+        const newDesc = document.createElement('p');
+        const newQuantity = document.createElement('p');
+        const newPrice = document.createElement('p');
+
+        newDesc.innerHTML = description;
+        newQuantity.innerHTML = quantity;
+
+        let roundedPrice = parseFloat(price).toFixed(2);
+        newPrice.innerHTML = "$ " + roundedPrice;
+
+        newP.append(newDesc);
+        newP.append(newQuantity);
+        newP.append(newPrice);
+        
         itemsList.prepend(newP);
+        total += price;
+        console.log(total)
+        updateSum()
 
         itemText.value = ""
+        quantityText.value = ""
+        priceText.value = ""
         document.getElementById("add2down").innerHTML = ""
+
+        // <div class="invoiceItem">
+        //     <p1>zoerm qw w eor  </p1>
+        //     <p1>oer </p1>
+        //     <p1>zoerm woer </p1>
+        // </div>
     }
 
     else {
@@ -138,12 +202,12 @@ function download() {
             // Check if the text will overflow to the next page
             const pageHeight = doc.internal.pageSize.height;
             const lineHeight = doc.getLineHeight();
-            const textHeight = lineHeight * doc.splitTextToSize(item.name, doc.internal.pageSize.width - 40).length;
+            const textHeight = lineHeight * doc.splitTextToSize(item.description, doc.internal.pageSize.width - 40).length;
             if (startY + textHeight > pageHeight - 20) {
                 doc.addPage(); // Add a new page if the text will overflow
                 startY = 45; // Reset the y position
             }
-            doc.text(item.name, 20, startY);
+            doc.text(item.description, 20, startY);
             startY += textHeight - 5; // Add some padding between lines
         }
 
@@ -217,6 +281,31 @@ itemText.addEventListener("keypress", function (e) {
         createItem();
     }
 });
+
+quantityText.addEventListener("keydown", function (e) {
+    if (e.key === "Enter" || e.code === 13) {
+        createItem();
+    }
+});
+
+quantityText.addEventListener("keypress", function (e) {
+    if (e.key === "Enter" || e.code === 13) {
+        createItem();
+    }
+});
+
+priceText.addEventListener("keydown", function (e) {
+    if (e.key === "Enter" || e.code === 13) {
+        createItem();
+    }
+});
+
+priceText.addEventListener("keypress", function (e) {
+    if (e.key === "Enter" || e.code === 13) {
+        createItem();
+    }
+});
+
 clearButton.addEventListener("click", function () {
     clear()
 })

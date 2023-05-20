@@ -10,7 +10,7 @@
     </head>
     
     <body>
-        <h1>Make Invoice</h1>
+        <h1>Add Invoice Lines:</h1>
         <button id = 'fscreen' class="fullscreen-button"></button>
 
         <div id="myNav" class="overlay">
@@ -21,7 +21,10 @@
         </div>
 
         <div class="container">
-            <input type="text" id="itemText" placeholder="Enter new item...">
+            <input type="text" class ="description" id = "itemText" placeholder="Description">
+            <input type="text" class="quantity" id = "quantityText" placeholder="Quantity..">
+            <input type="text" class="price" id = "priceText" placeholder="Price..">
+
             <button class="clearButton" id="add">Add</button>
             <button class="clearButton" id="clear">Clear</button>
         </div>
@@ -33,9 +36,11 @@
         <div class="shopping", id="items"></div>
 
         <div class = "sumArea">
-            zara
+            <p1></p1>
+            <p1>Total: </p1>
+            <p1 id="sumText">$ 0.00</p1>
         </div>
-        
+
         <script type="text/javascript" src="UI.js"></script>
         
     </body>

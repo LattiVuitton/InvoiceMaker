@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Create PDF and Send Email</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>
+  <script>
+    function createPDF() {
+      // Create a new PDF document
+      const doc = new jsPDF();
+      
+      // Add content to the PDF
+      doc.text("Hello, world!", 10, 10);
+      
+      // Save the PDF as a Blob
+      const pdfBlob = doc.output('blob');
+      
+      // Create a URL for the Blob
+      const pdfURL = URL.createObjectURL(pdfBlob);
+      
+      // Open the user's email client with the PDF attached
+      window.location.href = 'mailto:?subject=PDF Attachment&body=Please find attached the PDF file.&attachment=' + pdfURL;
+    }
+  </script>
+</head>
+<body>
+  <h1>Create PDF and Send Email</h1>
+  <button onclick="createPDF()">Generate PDF and Send Email</button>
+</body>
+</html>

@@ -1,7 +1,7 @@
 body{
-    background-color:rgb(197, 222, 250);
+    background-color:rgb(247, 231, 212);
     margin: 0;
-    font-family: 'Courier New', Courier, monospace;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
 }
 
 p {
@@ -184,12 +184,19 @@ vertical-align: middle;
     border-radius: 20px;
     font-size: 14px;
     border: none;
-    background-color: white;
-    box-shadow: 0 0 6px #ccc;
+    box-shadow: 0 0 7px #a3a3a3;
     width: 90px;
     max-width: 100%;
     margin-left: 10px;
     font-family: 'Courier New', Courier, monospace;
+}
+
+#clear{    
+    background-color: rgb(236, 162, 162);
+}
+
+#add{
+    background-color: rgb(176, 214, 179);
 }
 
 .clearButton:hover {
@@ -220,21 +227,58 @@ h1 {
     align-content: center;
 }
 
-
 .shopping {
     overflow:auto;
     height:65vh;
     width: 90vw;
     margin-left: 10vw;
     margin-top: 2vh;
-    background-color: red;
+    /* background-color: red; */
 }
 
 .sumArea{
     overflow:auto;
-    height:15vh;
-    width: 80vw;
+    height:8vh;
+    width: 90vw;
     margin-left: 10vw;
-    margin-top: 0vh;
-    background-color: burlywood;
+    margin-top: 5vh;
+    display: flex;
+    flex-direction: row;
+    /* background-color: orange; */
+}
+
+.description{
+    width: 25vw;
+}
+
+.quantity{
+    width: 25vw;
+    margin-left: 1%;
+}
+
+.price{
+    width: 10%;
+    margin-left: 1%;
+}
+
+
+/* Invoice line item */
+.invoiceItem{
+    display: flex;
+    flex-direction: row;
+    /* background-color: orange; */
+    height: 100px;
+    width: 100%;
+}
+
+p1 {
+    word-wrap: break-word;
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+    width: 80vw;
+    font-size: larger;
+    display: flex;
+    text-align: left;
+    align-items: center;
+    vertical-align: middle;
 }
