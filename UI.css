@@ -6,14 +6,16 @@ body{
 
 p {
     word-wrap: break-word;
-    margin-top: 2vh;
-    margin-bottom: 2vh;
+    margin-top: 0;
+    margin-left: 0%;
     width: 80vw;
+    height: 100%;
     font-size: larger;
     display: flex;
     text-align: left;
     align-items: center;
     vertical-align: middle;
+    overflow: hidden;
 }
 
 h2{
@@ -64,12 +66,11 @@ input {
     width: 40px;
     height: 40px;
     position: absolute;
-    top: 5px;
+    bottom: 5px;
     left: 5px;
     z-index: 3;
     padding: 10px;
     color: black;
-    font-size: x-large;
     border: none;
     cursor: pointer;
 }
@@ -78,13 +79,13 @@ input {
     width: 40px;
     height: 40px;
     position: absolute;
-    top: 5px;
+    bottom: 20px;
     left: 5px;
     z-index: 3;
     padding: 10px;
     color: black;
     background-color: #00000000;
-    font-size: x-large;
+    font-size: xx-large;
     border: none;
     cursor: pointer;
     pointer-events: none;
@@ -265,8 +266,6 @@ h1 {
 .invoiceItem{
     display: flex;
     flex-direction: row;
-    /* background-color: orange; */
-    height: 100px;
     width: 100%;
 }
 

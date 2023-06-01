@@ -27,20 +27,47 @@ class Item {
     }
 }
 
+function redden(redElem) {
+    // Get the original background color and text color of the element
+    var originalBgColor = window.getComputedStyle(redElem).backgroundColor;
+    var originalTextColor = window.getComputedStyle(redElem).color;
+  
+    // Apply the transition effect to the element for both background color and text color
+    redElem.style.transition = 'background-color 0.3s, color 0.3s';
+  
+    // Set the element's background color and text color to red
+    redElem.style.backgroundColor = 'rgb(236, 162, 162)';
+    redElem.style.color = 'rgb(236, 162, 162)';
+  
+    // Wait for 3 seconds
+    setTimeout(function() {
+      // Restore the element's original background color and text color after 3 seconds
+      redElem.style.backgroundColor = originalBgColor;
+      redElem.style.color = originalTextColor;
+    }, 350);
+  }
+
+  
 function isValidItem(description, quantity, price) {
+
+    validFound = true
+
     if (!isValidDesc(description)) {
-        return false
+        redden(itemText)
+        validFound = false
     }
 
     if (!isValidDesc(quantity)) {
-        return false
+        redden(quantityText)
+        validFound = false
     }
 
     if (!isValidPrice(price)) {
-        return false
+        redden(priceText)
+        validFound = false
     }
 
-    return true
+    return validFound
 }
 
 function isValidPrice(price) {
@@ -48,7 +75,6 @@ function isValidPrice(price) {
   if (isNaN(parsedPrice) || parsedPrice <= 0) {
     return false;
   }
-
   return true;
 }
 
@@ -66,6 +92,9 @@ function clear() {
     items = [];
     total = 0;
     updateSum();
+    itemText.value = "";
+    quantityText.value = "";
+    priceText.value = "";
 }
 
 function updateSum() {
@@ -73,7 +102,21 @@ function updateSum() {
     document.getElementById("sumText").innerHTML = "$ " + roundedNumber
 }
 
+function removeElement(element, item) {
+    total -= item.price;
+    updateSum();
+    element.remove();
+}
+
+let waitBeforeCreate = true;
+
 function createItem() {
+    if (!waitBeforeCreate) {
+        return
+    }
+    waitBeforeCreate = false
+    window.setTimeout('waitBeforeCreate = true', 1000)
+
     const itemsList = document.getElementById("items");
 
     let description = itemText.value;
@@ -90,20 +133,31 @@ function createItem() {
         const newDesc = document.createElement('p');
         const newQuantity = document.createElement('p');
         const newPrice = document.createElement('p');
+        const newDeleteButton = document.createElement('button');
 
         newDesc.innerHTML = description;
         newQuantity.innerHTML = quantity;
 
         let roundedPrice = parseFloat(price).toFixed(2);
         newPrice.innerHTML = "$ " + roundedPrice;
+        newPrice.style.marginLeft = '5px';
+
+        newDeleteButton.className = 'clearButton';
+        newDeleteButton.id = 'clear';
+        newDeleteButton.innerHTML = "-";
+        newDeleteButton.style.fontSize = '10px';
+        newDeleteButton.style.marginRight = '10%';
 
         newP.append(newDesc);
         newP.append(newQuantity);
         newP.append(newPrice);
+        newP.append(newDeleteButton);
+
+        newDeleteButton.style.height = '30px';
+        newDeleteButton.style.marginTop = '5px';
         
         itemsList.prepend(newP);
         total += price;
-        console.log(total)
         updateSum()
 
         itemText.value = ""
@@ -111,15 +165,25 @@ function createItem() {
         priceText.value = ""
         document.getElementById("add2down").innerHTML = ""
 
-        // <div class="invoiceItem">
-        //     <p1>zoerm qw w eor  </p1>
-        //     <p1>oer </p1>
-        //     <p1>zoerm woer </p1>
-        // </div>
-    }
+        newDeleteButton.addEventListener("click", function () {
+            removeElement(newP, newItem);
+        })
 
-    else {
-        itemText.value = ""
+        const elements = [newDesc, newQuantity, newPrice];
+
+        let maxHeight = 0;
+        elements.forEach((element) => {
+            const height = element.clientHeight;
+            console.log(height)
+          if (height > maxHeight) {
+            maxHeight = height;
+          }
+        });
+        
+        maxHeight = Math.max(40, maxHeight);
+
+        newP.style.marginBottom = '15px'
+        newP.style.height = maxHeight + 'px';
     }
 }
 
