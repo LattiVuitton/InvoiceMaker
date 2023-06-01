@@ -1,4 +1,5 @@
 body{
+    -webkit-tap-highlight-color: #00000000;
     background-color:rgb(247, 231, 212);
     margin: 0;
     font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
